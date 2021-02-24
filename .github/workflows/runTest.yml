@@ -1,7 +1,5 @@
 name: RunTests
 
-on: [push, pull_request]
-
 jobs:
   build-for-ui-test-linux:
     runs-on: ubuntu-latest
