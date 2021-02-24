@@ -14,6 +14,6 @@ jobs:
           export DISPLAY=:99.0
           Xvfb -ac :99 -screen 0 1920x1080x16 &
           gradle :ui-test-example:runIdeForUiTests &
-          while netstat -lnt | awk '$4 ~ /:8082/ {exit 1}'; do sleep 10; done
+          timeout 300 bash -c 'until echo > /dev/tcp/localhost/8082; do sleep 10; done'
       - name: run the UI tests
         run: gradle :ui-test-example:test
