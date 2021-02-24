@@ -14,5 +14,6 @@ jobs:
           export DISPLAY=:99.0
           Xvfb -ac :99 -screen 0 1920x1080x16 &
           gradle :ui-test-example:runIdeForUiTests &
-      - name: Sleep 180s & run the UI tests
-        run: sleep 180s && gradle :ui-test-example:test
+          while netstat -lnt | awk '$4 ~ /:8082/ {exit 1}'; do sleep 10; done
+      - name: run the UI tests
+        run: gradle :ui-test-example:test
