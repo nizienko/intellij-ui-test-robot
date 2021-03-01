@@ -8,10 +8,12 @@ import com.intellij.remoterobot.utils.Keyboard;
 import org.assertj.swing.core.MouseButton;
 import org.intellij.examples.simple.plugin.pages.IdeaFrame;
 import org.intellij.examples.simple.plugin.steps.JavaExampleSteps;
+import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension;
 import org.intellij.examples.simple.plugin.utils.StepsLogger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.awt.event.KeyEvent;
 import java.time.Duration;
@@ -25,6 +27,7 @@ import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.acti
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenuItem;
 import static org.intellij.examples.simple.plugin.pages.EditorKt.editor;
 
+@ExtendWith(RemoteRobotExtension.class)
 public class CreateCommandLineJavaTest {
 
     private final RemoteRobot remoteRobot = new RemoteRobot("http://127.0.0.1:8082");
@@ -37,7 +40,7 @@ public class CreateCommandLineJavaTest {
     }
 
     @AfterEach
-    public void closeProject() {
+    public void closeProject(final RemoteRobot remoteRobot) {
         step("Close the project", () -> {
             if (remoteRobot.isMac()) {
                 keyboard.hotKey(VK_SHIFT, VK_META, VK_A);
@@ -51,7 +54,7 @@ public class CreateCommandLineJavaTest {
     }
 
     @Test
-    void createCommandLineProject() {
+    void createCommandLineProject(final RemoteRobot remoteRobot) {
         sharedSteps.createNewCommandLineProject();
         sharedSteps.closeTipOfTheDay();
 
