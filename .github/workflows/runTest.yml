@@ -9,13 +9,15 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Setup UI testing env
+      - name: Clean
+        run: gradle :ui-test-example:clean
+      - name: Run Idea
         run: |
           export DISPLAY=:99.0
           Xvfb -ac :99 -screen 0 1920x1080x16 &
           gradle :ui-test-example:runIdeForUiTests &
           timeout 300 bash -c 'until echo > /dev/tcp/localhost/8082; do sleep 10; done'
-      - name: run the UI tests
+      - name: Tests
         run: gradle :ui-test-example:test
       - name: Save fails report
         if: ${{ failure() }}
@@ -32,11 +34,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Setup UI testing env
+      - name: Clean
+        run: gradle :ui-test-example:clean
+      - name: Run Idea
         run: |
           gradle :ui-test-example:runIdeForUiTests &
           sleep 300
-      - name: run the UI tests
+      - name: Tests
         run: gradle :ui-test-example:test
       - name: Save fails report
         if: ${{ failure() }}

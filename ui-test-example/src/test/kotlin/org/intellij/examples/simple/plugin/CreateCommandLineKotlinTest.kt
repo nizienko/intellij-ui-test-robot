@@ -79,8 +79,10 @@ class CreateCommandLineKotlinTest {
                     keyboard { enterText("println(\""); enterText("Hello from UI test") }
                 }
                 step("Launch application") {
-                    findText("main").click()
-                    keyboard { hotKey(VK_ALT, VK_ENTER); enter() }
+                    findText("main").click(MouseButton.RIGHT_BUTTON)
+                    find<ComponentFixture>(
+                        byXpath("//div[@class='ActionMenuItem' and contains(@text, 'Run')]")
+                    ).click()
                 }
             }
 
