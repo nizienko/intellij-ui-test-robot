@@ -75,12 +75,12 @@ jobs:
         run: gradle :ui-test-example:clean
       - name: Run Idea
         run: |
-          gradle :ui-test-example:runIdeForUiTests
+          gradle :ui-test-example:runIdeForUiTests &
 #          sleep 300
       - name: Wait for Idea started
         uses: jtalk/url-health-check-action@v1.4
         with:
-          url: http://127.0.0.1:8082
+          url: http://0.0.0.0:8082
           follow-redirect: no # Optional, defaults to "no"
           max-attempts: 20 # Optional, defaults to 1
           retry-delay: 30s # Optional, only applicable to max-attempts > 1
