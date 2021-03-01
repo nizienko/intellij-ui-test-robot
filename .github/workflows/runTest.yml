@@ -62,7 +62,7 @@ jobs:
       - name: Run Idea
         run: |
           gradle :ui-test-example:runIdeForUiTests &
-          sleep 300
+          sleep 600
       - name: Tests
         run: gradle :ui-test-example:test
       - name: Save fails report
