@@ -17,3 +17,10 @@ jobs:
           timeout 300 bash -c 'until echo > /dev/tcp/localhost/8082; do sleep 10; done'
       - name: run the UI tests
         run: gradle :ui-test-example:test
+      - name: Save fails report
+          if: ${{ failure() }}
+          uses: actions/upload-artifact@v2
+          with:
+            name: ui-test-fails-report
+            path: |
+              ui-test-example/build/fails-reports
