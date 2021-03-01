@@ -89,8 +89,8 @@ public class CreateCommandLineJavaTest {
 
         assert (idea.find(
                 ContainerFixture.class,
-                byXpath("//div[@class='ConsoleViewImpl']"),
-                Duration.ofMinutes(1)
+                byXpath("//div[@class='ConsoleViewImpl2']"),
+                Duration.ofSeconds(10)
         ).hasText("Hello from UI test"));
     }
 }

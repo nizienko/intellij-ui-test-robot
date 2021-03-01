@@ -1,6 +1,8 @@
 package org.intellij.examples.simple.plugin.utils
 
 import com.intellij.remoterobot.RemoteRobot
+import com.intellij.remoterobot.fixtures.ContainerFixture
+import com.intellij.remoterobot.search.locators.byXpath
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
@@ -43,7 +45,8 @@ class RemoteRobotExtension : AfterTestExecutionCallback, ParameterResolver {
         val testMethodName = testMethod.name
         val testFailed: Boolean = context.executionException?.isPresent ?: false
         if (testFailed) {
-            saveScreenshot(testMethodName)
+//            saveScreenshot(testMethodName)
+            saveIdeaFrames(testMethodName)
             saveHierarchy(testMethodName)
         }
     }
@@ -69,12 +72,45 @@ class RemoteRobotExtension : AfterTestExecutionCallback, ParameterResolver {
             writeText(response.body?.string() ?: "")
         }
     }
+
     private fun BufferedImage.save(name: String) {
         val bytes = ByteArrayOutputStream().use { b ->
             ImageIO.write(this, "png", b)
             b.toByteArray()
         }
         File("build/reports").apply { mkdirs() }.resolve("$name.png").writeBytes(bytes)
+    }
+
+    private fun saveIdeaFrames(testName: String) {
+        remoteRobot.findAll<ContainerFixture>(byXpath("//div[@class='IdeFrameImpl']")).forEachIndexed { n, frame ->
+            println("$n !!!!!!")
+            val pic = try {
+                frame.callJs<ByteArray>(
+                    """
+                        importPackage(java.io)
+                        importPackage(javax.imageio)
+                        importPackage(java.awt.image)
+                        const screenShot = new BufferedImage(component.getWidth(), component.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                        component.paint(screenShot.getGraphics())
+                        let pictureBytes;
+                        const baos = new ByteArrayOutputStream();
+                        try {
+                            ImageIO.write(screenShot, "png", baos);
+                            pictureBytes = baos.toByteArray();
+                        } finally {
+                          baos.close();
+                        }
+                        pictureBytes;   
+            """, true
+                )
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                throw e
+            }
+            pic.inputStream().use {
+                ImageIO.read(it)
+            }.save(testName + "_" + n)
+        }
     }
 
     private fun fetchScreenShot(): BufferedImage {
