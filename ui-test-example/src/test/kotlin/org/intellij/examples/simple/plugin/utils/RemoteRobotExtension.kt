@@ -54,9 +54,9 @@ class RemoteRobotExtension : AfterTestExecutionCallback, ParameterResolver {
 
     private fun saveHierarchy(testName: String) {
         val hierarchySnapshot =
-            saveFile(url, "build/fails-report", "hierarchy-$testName.html")
-        if (File("build/hierarchy-reports/styles.css").exists().not()) {
-            saveFile("$url/styles.css", "build/hierarchy-reports", "styles.css")
+            saveFile(url, "build/reports", "hierarchy-$testName.html")
+        if (File("build/reports/styles.css").exists().not()) {
+            saveFile("$url/styles.css", "build/reports", "styles.css")
         }
         println("Hierarchy snapshot: ${hierarchySnapshot.absolutePath}")
     }
@@ -74,7 +74,7 @@ class RemoteRobotExtension : AfterTestExecutionCallback, ParameterResolver {
             ImageIO.write(this, "png", b)
             b.toByteArray()
         }
-        File("build/fails-report").apply { mkdirs() }.resolve("$name.png").writeBytes(bytes)
+        File("build/reports").apply { mkdirs() }.resolve("$name.png").writeBytes(bytes)
     }
 
     private fun fetchScreenShot(): BufferedImage {
