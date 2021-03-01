@@ -49,26 +49,26 @@ jobs:
           name: ui-test-fails-report-mac
           path: |
             ui-test-example/build/reports
-  build-for-ui-test-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Clean
-        run: gradle :ui-test-example:clean
-      - name: Run Idea
-        run: |
-          gradle :ui-test-example:runIdeForUiTests &
-          sleep 600
-      - name: Tests
-        run: gradle :ui-test-example:test
-      - name: Save fails report
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: ui-test-fails-report-windows
-          path: |
-            ui-test-example/build/reports
+#  build-for-ui-test-windows:
+#    runs-on: windows-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Setup Java
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 11
+#      - name: Clean
+#        run: gradle :ui-test-example:clean
+#      - name: Run Idea
+#        run: |
+#          gradle :ui-test-example:runIdeForUiTests &
+#          sleep 300
+#      - name: Tests
+#        run: gradle :ui-test-example:test
+#      - name: Save fails report
+#        if: ${{ failure() }}
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ui-test-fails-report-windows
+#          path: |
+#            ui-test-example/build/reports
