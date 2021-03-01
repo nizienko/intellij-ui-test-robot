@@ -23,7 +23,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
-          name: ui-test-fails-report
+          name: ui-test-fails-report-linux
           path: |
             ui-test-example/build/reports
   build-for-ui-test-mac-os:
@@ -46,6 +46,6 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
-          name: ui-test-fails-report
+          name: ui-test-fails-report-mac
           path: |
             ui-test-example/build/reports

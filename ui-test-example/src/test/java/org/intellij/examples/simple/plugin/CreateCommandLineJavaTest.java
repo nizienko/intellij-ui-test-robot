@@ -16,14 +16,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.awt.event.KeyEvent;
-import java.time.Duration;
 
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.stepsProcessing.StepWorkerKt.step;
 import static com.intellij.remoterobot.utils.KeyboardUtilsKt.autocomplete;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
 import static java.awt.event.KeyEvent.*;
+import static java.time.Duration.ofMinutes;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenu;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenuItem;
 import static org.intellij.examples.simple.plugin.pages.EditorKt.editor;
@@ -60,6 +59,7 @@ public class CreateCommandLineJavaTest {
         sharedSteps.closeTipOfTheDay();
 
         final IdeaFrame idea = remoteRobot.find(IdeaFrame.class);
+        waitFor(ofMinutes(5), () -> !idea.isDumbMode());
 
         step("Create New Kotlin file", () -> {
             final ContainerFixture projectView = idea.getProjectViewTree();
@@ -92,7 +92,7 @@ public class CreateCommandLineJavaTest {
         assert (idea.find(
                 ContainerFixture.class,
                 byXpath("//div[@class='ConsoleViewImpl']"),
-                Duration.ofMinutes(2)
+                ofMinutes(2)
         ).hasText("Hello from UI test"));
     }
 }

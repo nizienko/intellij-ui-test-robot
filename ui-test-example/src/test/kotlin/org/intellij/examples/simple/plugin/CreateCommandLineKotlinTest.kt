@@ -19,7 +19,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.awt.event.KeyEvent.*
-import java.time.Duration
+import java.time.Duration.ofMinutes
 
 @ExtendWith(RemoteRobotExtension::class)
 class CreateCommandLineKotlinTest {
@@ -63,6 +63,7 @@ class CreateCommandLineKotlinTest {
         }
         sharedSteps.closeTipOfTheDay()
         idea {
+            waitFor(ofMinutes(5)) { isDumbMode().not() }
             step("Create App file") {
                 with(projectViewTree) {
                     findText(projectName).doubleClick()
@@ -80,7 +81,7 @@ class CreateCommandLineKotlinTest {
                 }
                 step("Launch application") {
                     findText("main").click(MouseButton.RIGHT_BUTTON)
-                    find<ComponentFixture>(
+                    this@idea.find<ComponentFixture>(
                         byXpath("//div[@class='ActionMenuItem' and contains(@text, 'Run')]")
                     ).click()
                 }
@@ -88,7 +89,7 @@ class CreateCommandLineKotlinTest {
 
             val consoleLocator = byXpath("ConsoleViewImpl", "//div[@class='ConsoleViewImpl']")
             step("Wait for Console appears") {
-                waitFor(Duration.ofMinutes(1)) { findAll<ContainerFixture>(consoleLocator).isNotEmpty() }
+                waitFor(ofMinutes(2)) { findAll<ContainerFixture>(consoleLocator).isNotEmpty() }
             }
             step("Check the message") {
                 assert(find<ContainerFixture>(consoleLocator).hasText("Hello from UI test"))
