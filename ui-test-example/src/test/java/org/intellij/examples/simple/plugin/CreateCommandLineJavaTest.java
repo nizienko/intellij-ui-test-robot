@@ -3,6 +3,7 @@
 package org.intellij.examples.simple.plugin;
 
 import com.intellij.remoterobot.RemoteRobot;
+import com.intellij.remoterobot.fixtures.ComponentFixture;
 import com.intellij.remoterobot.fixtures.ContainerFixture;
 import com.intellij.remoterobot.utils.Keyboard;
 import org.assertj.swing.core.MouseButton;
@@ -82,15 +83,16 @@ public class CreateCommandLineJavaTest {
         });
 
         step("Launch the application", () -> {
-            editor.findText("main").click();
-            keyboard.hotKey(KeyEvent.VK_ALT, KeyEvent.VK_ENTER);
-            keyboard.enter();
+            editor.findText("main").click(MouseButton.RIGHT_BUTTON);
+            idea.find(ComponentFixture.class,
+                    byXpath("//div[@class='ActionMenuItem' and contains(@text, 'Run')]")
+            ).click();
         });
 
         assert (idea.find(
                 ContainerFixture.class,
                 byXpath("//div[@class='ConsoleViewImpl']"),
-                Duration.ofMinutes(2)
+                Duration.ofMinutes(1)
         ).hasText("Hello from UI test"));
     }
 }
