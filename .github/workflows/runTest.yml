@@ -1,5 +1,5 @@
 name: RunTests
-on: [push, pull_request]
+on: [ push, pull_request ]
 jobs:
   build-for-ui-test-linux:
     runs-on: ubuntu-latest
@@ -18,9 +18,9 @@ jobs:
       - name: run the UI tests
         run: gradle :ui-test-example:test
       - name: Save fails report
-          if: ${{ failure() }}
-          uses: actions/upload-artifact@v2
-          with:
-            name: ui-test-fails-report
-            path: |
-              ui-test-example/build/fails-reports
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ui-test-fails-report
+          path: |
+            ui-test-example/build/fails-reports
