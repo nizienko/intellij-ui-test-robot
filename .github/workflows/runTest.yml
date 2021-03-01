@@ -24,3 +24,24 @@ jobs:
           name: ui-test-fails-report
           path: |
             ui-test-example/build/reports
+  build-for-ui-test-mac-os:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Setup UI testing env
+        run: |
+          gradle :ui-test-example:runIdeForUiTests &
+          sleep 300
+      - name: run the UI tests
+        run: gradle :ui-test-example:runIdeForUiTests &
+      - name: Save fails report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ui-test-fails-report
+          path: |
+            ui-test-example/build/reports
