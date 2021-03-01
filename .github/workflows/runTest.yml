@@ -37,7 +37,7 @@ jobs:
           gradle :ui-test-example:runIdeForUiTests &
           sleep 300
       - name: run the UI tests
-        run: gradle :ui-test-example:runIdeForUiTests &
+        run: gradle :ui-test-example:test
       - name: Save fails report
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
