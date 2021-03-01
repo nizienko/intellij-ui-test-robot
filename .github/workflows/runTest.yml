@@ -23,4 +23,4 @@ jobs:
         with:
           name: ui-test-fails-report
           path: |
-            ui-test-example/build/fails-reports
+            ui-test-example/build/fails-report
