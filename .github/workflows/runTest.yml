@@ -77,10 +77,12 @@ jobs:
         run: |
           gradle :ui-test-example:runIdeForUiTests &
 #          sleep 300
+      - name: Add Firewall Rule
+        run: New-NetFirewallRule -Name FirefoxRemote -DisplayName "Open Port 8082" -Direction Inbound -Protocol tcp -LocalPort 8082 -Action Allow -Enabled True
       - name: Wait for Idea started
         uses: jtalk/url-health-check-action@v1.4
         with:
-          url: http://localhost:8580
+          url: http://localhost:8082
           follow-redirect: no # Optional, defaults to "no"
           max-attempts: 12 # Optional, defaults to 1
           retry-delay: 30s # Optional, only applicable to max-attempts > 1

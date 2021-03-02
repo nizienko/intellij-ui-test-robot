@@ -18,7 +18,7 @@ import java.lang.reflect.Method
 import javax.imageio.ImageIO
 
 class RemoteRobotExtension : AfterTestExecutionCallback, ParameterResolver {
-    private val url: String = System.getProperty("remote-robot-url") ?: "http://127.0.0.1:8580"
+    private val url: String = System.getProperty("remote-robot-url") ?: "http://127.0.0.1:8082"
     private val remoteRobot: RemoteRobot = if (System.getProperty("debug-retrofit")?.equals("enable") == true) {
         val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
             this.level = HttpLoggingInterceptor.Level.BODY
