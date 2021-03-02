@@ -73,8 +73,8 @@ jobs:
           java-version: 11
       - name: Add Firewall Rule
         run: New-NetFirewallRule -Name RobotServerLocal -DisplayName "Open Port 8082" -Direction Inbound -Protocol tcp -LocalPort 8082 -Action Allow -Enabled True
-      - name: Clean
-        run: gradle :ui-test-example:clean
+#      - name: Clean
+#        run: gradle :ui-test-example:clean
       - name: Run Idea
         run: |
           start dir /s /b "gradle :ui-test-example:runIdeForUiTests"
