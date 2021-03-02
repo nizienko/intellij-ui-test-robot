@@ -89,10 +89,10 @@ class CreateCommandLineKotlinTest {
 
             val consoleLocator = byXpath("ConsoleViewImpl", "//div[@class='ConsoleViewImpl']")
             step("Wait for Console appears") {
-                waitFor(ofMinutes(2)) { findAll<ContainerFixture>(consoleLocator).isNotEmpty() }
+                waitFor(ofMinutes(1)) { findAll<ContainerFixture>(consoleLocator).isNotEmpty() }
             }
             step("Check the message") {
-                assert(find<ContainerFixture>(consoleLocator).hasText("Hello from UI test"))
+                waitFor(ofMinutes(1)) { find<ContainerFixture>(consoleLocator).hasText("Hello from UI test") }
             }
         }
     }

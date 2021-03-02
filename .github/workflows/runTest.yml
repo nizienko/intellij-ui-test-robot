@@ -1,68 +1,63 @@
 name: RunTests
 on: [ push, pull_request ]
 jobs:
-#  build-for-ui-test-linux:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Setup Java
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
-#      - name: Clean
-#        run: gradle :ui-test-example:clean
-#      - name: Run Idea
-#        run: |
-#          export DISPLAY=:99.0
-#          Xvfb -ac :99 -screen 0 1920x1080x16 &
-#          gradle :ui-test-example:runIdeForUiTests &
-##          timeout 300 bash -c 'until echo > /dev/tcp/localhost/8082; do sleep 10; done'
-#      - name: Wait for Idea started
-#        uses: jtalk/url-health-check-action@v1.4
-#        with:
-#          url: http://127.0.0.1:8082
-#          follow-redirect: no # Optional, defaults to "no"
-#          max-attempts: 10 # Optional, defaults to 1
-#          retry-delay: 30s # Optional, only applicable to max-attempts > 1
-#      - name: Tests
-#        run: gradle :ui-test-example:test
-#      - name: Save fails report
-#        if: ${{ failure() }}
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: ui-test-fails-report-linux
-#          path: |
-#            ui-test-example/build/reports
-#  build-for-ui-test-mac-os:
-#    runs-on: macos-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Setup Java
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
-#      - name: Clean
-#        run: gradle :ui-test-example:clean
-#      - name: Run Idea
-#        run: |
-#          gradle :ui-test-example:runIdeForUiTests &
-##          sleep 300
-#      - name: Wait for Idea started
-#        uses: jtalk/url-health-check-action@v1.4
-#        with:
-#          url: http://127.0.0.1:8082
-#          follow-redirect: no # Optional, defaults to "no"
-#          max-attempts: 10 # Optional, defaults to 1
-#          retry-delay: 30s # Optional, only applicable to max-attempts > 1
-#      - name: Tests
-#        run: gradle :ui-test-example:test
-#      - name: Save fails report
-#        if: ${{ failure() }}
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: ui-test-fails-report-mac
-#          path: |
-#            ui-test-example/build/reports
+  build-for-ui-test-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Clean
+        run: gradle :ui-test-example:clean
+      - name: Run Idea
+        run: |
+          export DISPLAY=:99.0
+          Xvfb -ac :99 -screen 0 1920x1080x16 &
+          gradle :ui-test-example:runIdeForUiTests &
+      - name: Wait for Idea started
+        uses: jtalk/url-health-check-action@v1.4
+        with:
+          url: http://127.0.0.1:8082
+          max-attempts: 10
+          retry-delay: 30s
+      - name: Tests
+        run: gradle :ui-test-example:test
+      - name: Save fails report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ui-test-fails-report-linux
+          path: |
+            ui-test-example/build/reports
+  build-for-ui-test-mac-os:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Clean
+        run: gradle :ui-test-example:clean
+      - name: Run Idea
+        run: gradle :ui-test-example:runIdeForUiTests &
+      - name: Wait for Idea started
+        uses: jtalk/url-health-check-action@v1.4
+        with:
+          url: http://127.0.0.1:8082
+          max-attempts: 10
+          retry-delay: 30s
+      - name: Tests
+        run: gradle :ui-test-example:test
+      - name: Save fails report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ui-test-fails-report-mac
+          path: |
+            ui-test-example/build/reports
   build-for-ui-test-windows:
     runs-on: windows-latest
     steps:
@@ -71,22 +66,18 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Add Firewall Rule
-        run: New-NetFirewallRule -Name RobotServerLocal -DisplayName "Open Port 8082" -Direction Inbound -Protocol tcp -LocalPort 8082 -Action Allow -Enabled True
-#      - name: Clean
-#        run: gradle :ui-test-example:clean
+#      - name: Add Firewall Rule
+#        run: New-NetFirewallRule -Name RobotServerLocal -DisplayName "Open Port 8082" -Direction Inbound -Protocol tcp -LocalPort 8082 -Action Allow -Enabled True
+      - name: Clean
+        run: gradle :ui-test-example:clean
       - name: Run Idea
-        run: |
-          start gradlew.bat :ui-test-example:runIdeForUiTests
-      #          gradle :ui-test-example:runIdeForUiTests &
-#          sleep 300
+        run: start gradlew.bat :ui-test-example:runIdeForUiTests
       - name: Wait for Idea started
         uses: jtalk/url-health-check-action@v1.4
         with:
           url: http://localhost:8082
-          follow-redirect: no # Optional, defaults to "no"
-          max-attempts: 12 # Optional, defaults to 1
-          retry-delay: 30s # Optional, only applicable to max-attempts > 1
+          max-attempts: 12
+          retry-delay: 30s
       - name: Tests
         run: gradle :ui-test-example:test
       - name: Save fails report
