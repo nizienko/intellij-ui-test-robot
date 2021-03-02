@@ -77,7 +77,7 @@ jobs:
 #        run: gradle :ui-test-example:clean
       - name: Run Idea
         run: |
-          start dir /s /b "gradle :ui-test-example:runIdeForUiTests"
+          start gradlew.bat :ui-test-example:runIdeForUiTests"
       #          gradle :ui-test-example:runIdeForUiTests &
 #          sleep 300
       - name: Wait for Idea started
